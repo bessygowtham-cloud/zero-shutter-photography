@@ -15,6 +15,7 @@
   --teal-deep:#0a5f60;
   --teal-mist:#9ed5d1;
   --teal-wash:#eef7f6;
+  --sage:#cfe9e3;
 
   --shell:1240px;
   --gutter:clamp(20px, 5vw, 64px);
@@ -530,7 +531,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .acc__body p{margin:0;color:var(--ink-soft);font-size:.96rem;}
 
 /* ── Contact ──────────────────────────────────────────── */
-.contact{background:var(--paper-warm);}
+.contact{background:var(--sage);}
 .contact__grid{
   display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(2.4rem,6vw,5.5rem);align-items:start;
