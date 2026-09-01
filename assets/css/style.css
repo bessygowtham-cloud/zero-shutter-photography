@@ -236,8 +236,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   object-fit:cover;
   will-change:transform;
 }
-/* Nudges the subject upward within the frame, clear of the text zone below. */
-.hero__pane--b .hero__pane-img{top:-22%;height:138%;object-position:center 30%;}
+/* This photo's faces sit in the top third; nudge slightly to keep them clear of the text zone below. */
+.hero__pane--b .hero__pane-img{top:-16%;height:130%;object-position:center 22%;}
 .hero__scrim{
   position:absolute;inset:0;pointer-events:none;
   background:
@@ -946,6 +946,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .drop__all{margin-top:.4rem;padding-top:.8rem;}
 
   .hero{height:82vh;min-height:520px;}
+  /* Narrow side-by-side panes crop more aggressively — ease off so foreheads don't clip. */
+  .hero__pane--b .hero__pane-img{top:-8%;height:118%;object-position:center 20%;}
   .hero__overlay{bottom:1.7rem;}
   .hero__overlay .lede{display:none;}
   .hero__scroll{display:none;}
