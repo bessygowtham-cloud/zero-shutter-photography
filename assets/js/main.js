@@ -11,6 +11,32 @@
     });
   }
 
+  /* Hero parallax — the three panes drift at different speeds as you scroll past. */
+  var hero = $('hero');
+  var panes = hero ? Array.prototype.slice.call(hero.querySelectorAll('.hero__pane-img')) : [];
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (hero && panes.length && !reduceMotion) {
+    var speeds = [0.12, 0.2, 0.28];
+    var ticking = false;
+
+    var applyParallax = function () {
+      var y = Math.min(window.scrollY, hero.offsetHeight);
+      panes.forEach(function (img, i) {
+        img.style.transform = 'translateY(' + (y * speeds[i % speeds.length]) + 'px)';
+      });
+      ticking = false;
+    };
+
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        window.requestAnimationFrame(applyParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+    applyParallax();
+  }
+
   /* Sticky header */
   var header = $('siteHeader');
   if (header) {
