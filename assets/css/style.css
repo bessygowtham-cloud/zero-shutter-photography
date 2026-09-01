@@ -315,7 +315,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   font-family:var(--serif);
   font-size:clamp(1.5rem,3.1vw,2.5rem);
   line-height:1.34;font-weight:400;
-  max-width:26ch;margin:0 auto 3.5rem;
+  max-width:46ch;margin:0 auto 3.5rem;
   text-align:center;color:var(--ink);
   text-wrap:balance;
 }
