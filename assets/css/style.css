@@ -597,12 +597,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 
 .contact__list{list-style:none;padding:0;margin:2.6rem 0 0;}
 .contact__list li{
-  padding:1.1rem 0;border-top:1px solid var(--line);
+  padding:1.1rem 0;border-top:1px solid rgba(17,19,18,.15);
   display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem;
 }
-.contact__list li:last-child{border-bottom:1px solid var(--line);}
+.contact__list li:last-child{border-bottom:1px solid rgba(17,19,18,.15);}
 .contact__list span{
-  font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-mute);
+  font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink-soft);
 }
 .contact__list a{
   font-family:var(--serif);font-size:1.15rem;color:var(--ink);
@@ -800,7 +800,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   background:var(--paper-warm);border-bottom:1px solid var(--line);
 }
 .page-hero__grid{
-  display:grid;grid-template-columns:.95fr 1.15fr;
+  display:grid;grid-template-columns:.82fr 1.28fr;
   gap:clamp(2.5rem,6vw,5rem);align-items:center;
 }
 .page-hero__copy .display{font-size:clamp(2.6rem,6vw,4.8rem);}
@@ -814,15 +814,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 }
 .page-hero__media{overflow:hidden;background:var(--paper-tint);}
 .page-hero__media:hover img{transform:scale(1.04);}
-
-.crumbs{
-  display:flex;align-items:center;gap:.55rem;margin:0 0 1.5rem;
-  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--ink-mute);
-}
-.crumbs a{transition:color .35s var(--ease);}
-.crumbs a:hover{color:var(--teal);}
-.crumbs span{color:var(--teal-mist);}
 
 /* ── Service detail blocks ────────────────────────────── */
 .detail__grid{
@@ -970,7 +961,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .story__grid,.faq__grid,.contact__grid{grid-template-columns:1fr;}
   .page-hero__grid,.detail__grid{grid-template-columns:1fr;}
   .page-hero{padding-top:7.5rem;}
-  .page-hero__media{max-width:440px;}
+  .page-hero__media{max-width:100%;}
   .svc-row{grid-template-columns:1fr;gap:2rem;}
   .svc-row:nth-child(even) .svc-row__media{order:0;}
   .svc-row__media{max-width:440px;}
