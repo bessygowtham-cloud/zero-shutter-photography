@@ -4,8 +4,9 @@
     {
       "name": "zero-shutter",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["serve", "-l", "4321", "."],
-      "port": 4321
+      "runtimeArgs": ["serve", "."],
+      "port": 4322,
+      "autoPort": true
     }
   ]
 }
