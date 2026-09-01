@@ -476,6 +476,21 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   gap:clamp(1.5rem,3vw,2.6rem);
 }
 .step{padding-top:1.6rem;border-top:1px solid rgba(255,255,255,.16);}
+.step-icon{display:block;margin-bottom:1.3rem;overflow:visible;}
+.step-icon__path{
+  fill:none;stroke:var(--teal-mist);stroke-width:1.3;
+  stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:100;stroke-dashoffset:100;
+  transition:stroke-dashoffset 1s var(--ease);
+}
+.step-icon__path--b{stroke-dasharray:50;stroke-dashoffset:50;transition-delay:.4s;}
+.step.is-in .step-icon__path{stroke-dashoffset:0;}
+.steps li:nth-child(2).is-in .step-icon__path{transition-delay:.08s;}
+.steps li:nth-child(2).is-in .step-icon__path--b{transition-delay:.48s;}
+.steps li:nth-child(3).is-in .step-icon__path{transition-delay:.16s;}
+.steps li:nth-child(3).is-in .step-icon__path--b{transition-delay:.56s;}
+.steps li:nth-child(4).is-in .step-icon__path{transition-delay:.24s;}
+.steps li:nth-child(4).is-in .step-icon__path--b{transition-delay:.64s;}
 .step__num{
   display:block;font-family:var(--serif);font-size:.95rem;
   color:var(--teal-mist);letter-spacing:.2em;margin-bottom:1rem;
