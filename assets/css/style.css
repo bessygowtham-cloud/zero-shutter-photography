@@ -15,7 +15,7 @@
   --teal-deep:#0a5f60;
   --teal-mist:#9ed5d1;
   --teal-wash:#eef7f6;
-  --sage:#cfe9e3;
+  --sage:#e2f4f0;
 
   --shell:1240px;
   --gutter:clamp(20px, 5vw, 64px);
@@ -198,6 +198,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .has-photo-hero .site-header:not(.is-stuck) .nav:not(.is-open) .nav__cta{border-color:rgba(255,255,255,.7);color:#fff;}
 .has-photo-hero .site-header:not(.is-stuck) .nav:not(.is-open) .nav__cta:hover{background:#fff;color:var(--ink);}
 .has-photo-hero .site-header:not(.is-stuck) .burger span{background:#fff;}
+/* The X sits over the drawer's own white panel once it's open, not the photo — keep it dark there. */
+.has-photo-hero .site-header:not(.is-stuck) .burger.is-open span{background:var(--ink);}
 
 .burger{display:none;width:30px;height:20px;position:relative;}
 .burger span{
@@ -234,6 +236,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   object-fit:cover;
   will-change:transform;
 }
+/* Nudges the subject upward within the frame, clear of the text zone below. */
+.hero__pane--b .hero__pane-img{top:-22%;height:138%;object-position:center 30%;}
 .hero__scrim{
   position:absolute;inset:0;pointer-events:none;
   background:
@@ -243,12 +247,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 }
 
 .hero__overlay{
-  position:absolute;left:0;right:0;bottom:clamp(2.2rem,6vh,4.5rem);z-index:2;
+  position:absolute;left:0;right:0;bottom:clamp(1.6rem,4vh,3rem);z-index:2;
 }
-.hero__overlay .eyebrow{color:#fff;}
-.hero__overlay .display{color:#fff;margin-bottom:1.1rem;}
+.hero__overlay .eyebrow{color:#fff;margin-bottom:.7rem;}
+.hero__overlay .display{
+  color:#fff;margin-bottom:.9rem;
+  font-size:clamp(2.3rem,5.4vw,4.2rem);
+}
 .hero__overlay .display em{color:var(--teal-mist);}
-.hero__overlay .lede{color:rgba(255,255,255,.85);max-width:42ch;}
+.hero__overlay .lede{
+  color:rgba(255,255,255,.85);max-width:36ch;
+  font-size:.92rem;line-height:1.5;margin-bottom:1.7rem;
+}
 .hero__overlay .btn--ghost{border-color:rgba(255,255,255,.55);color:#fff;}
 .hero__overlay .btn--ghost:hover{background:#fff;border-color:#fff;color:var(--ink);}
 .hero__actions{display:flex;flex-wrap:wrap;gap:.85rem;}
@@ -437,6 +447,28 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   width:3px;height:3px;background:var(--teal);border-radius:50%;
 }
 
+/* ── Journey icon (Experience section) ────────────────── */
+.section__head--journal{max-width:none;}
+.section__head--journal .heading{white-space:nowrap;}
+
+.journey-icon{display:block;margin-bottom:1.1rem;overflow:visible;}
+.journey-icon__path{
+  fill:none;stroke:var(--teal-mist);stroke-width:1.4;
+  stroke-dasharray:150;stroke-dashoffset:150;
+  transition:stroke-dashoffset 1.2s var(--ease) .1s;
+}
+.journey-icon__dot{
+  fill:var(--teal-mist);opacity:0;
+  transform-origin:center;transform:scale(0);
+  transition:opacity .4s var(--ease), transform .4s var(--ease);
+}
+.section__head--journal.is-in .journey-icon__path{stroke-dashoffset:0;}
+.section__head--journal.is-in .journey-icon__dot{opacity:1;transform:scale(1);}
+.section__head--journal.is-in .journey-icon__dot:nth-of-type(1){transition-delay:.1s;}
+.section__head--journal.is-in .journey-icon__dot:nth-of-type(2){transition-delay:.45s;}
+.section__head--journal.is-in .journey-icon__dot:nth-of-type(3){transition-delay:.8s;}
+.section__head--journal.is-in .journey-icon__dot:nth-of-type(4){transition-delay:1.15s;}
+
 /* ── Steps ────────────────────────────────────────────── */
 .steps{
   list-style:none;padding:0;margin:0;
@@ -455,28 +487,37 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .step p{color:rgba(255,255,255,.62);font-size:.92rem;margin:0;}
 
 /* ── Quotes ───────────────────────────────────────────── */
+.quotes{background:var(--paper-warm);}
 .quote-grid{
   display:grid;grid-template-columns:repeat(3,1fr);
-  gap:clamp(1.4rem,3vw,2.6rem);
+  gap:clamp(1.6rem,3vw,2.1rem);
 }
 .quote{
-  margin:0;padding:2.4rem 2rem;
-  background:var(--paper-warm);border:1px solid var(--line);
+  margin:0;padding:2.6rem 2.2rem 2.3rem;
+  background:var(--paper);border:1px solid var(--line);
+  box-shadow:0 26px 54px -36px rgba(17,19,18,.3);
   display:flex;flex-direction:column;justify-content:space-between;
+  transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+}
+.quote:hover{
+  transform:translateY(-5px);
+  box-shadow:0 34px 64px -32px rgba(17,19,18,.4);
+}
+.quote__mark{
+  display:block;font-family:var(--serif);font-size:3.6rem;
+  line-height:1;color:var(--teal-mist);margin-bottom:.2rem;
 }
 .quote p{
-  font-family:var(--serif);font-size:1.2rem;line-height:1.55;
-  font-style:normal;color:var(--ink);margin:0 0 1.8rem;
+  font-family:var(--serif);font-size:1.4rem;line-height:1.48;
+  font-style:normal;color:var(--ink);margin:0 0 2rem;
 }
-.quote p::before{content:"“";color:var(--teal-mist);}
-.quote p::after{content:"”";color:var(--teal-mist);}
 .quote cite{
-  font-style:normal;font-size:.78rem;letter-spacing:.14em;
-  text-transform:uppercase;color:var(--ink);
+  font-style:normal;font-family:var(--serif);font-size:1.05rem;
+  letter-spacing:.01em;color:var(--ink);display:block;
 }
 .quote cite span{
   display:block;color:var(--ink-mute);letter-spacing:.16em;
-  font-size:.65rem;margin-top:.3rem;
+  text-transform:uppercase;font-size:.65rem;margin-top:.4rem;
 }
 
 /* ── Instagram ────────────────────────────────────────── */
@@ -618,6 +659,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .ico{vertical-align:-2px;margin-right:.4em;flex:none;}
 .contact__list a .ico{vertical-align:-1px;}
 .insta__handles a .ico{vertical-align:-2px;}
+
+.ico--ig-brand{
+  width:20px;height:20px;border-radius:6px;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:radial-gradient(circle at 30% 107%,
+    #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+  vertical-align:-5px;
+}
+.contact__list a .ico--ig-brand{vertical-align:-4px;}
+.ico--ig-brand svg{width:12px;height:12px;}
 
 /* ── WhatsApp float ───────────────────────────────────── */
 .wa-float{
@@ -850,6 +901,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .svc-grid{grid-template-columns:repeat(2,1fr);gap:2rem 1.4rem;}
   .steps{grid-template-columns:repeat(2,1fr);}
   .gallery{grid-template-columns:repeat(3,1fr);}
+  .quote-grid{grid-template-columns:repeat(2,1fr);}
   .insta-strip{grid-template-columns:repeat(3,1fr);}
   .footer__grid{grid-template-columns:1fr 1fr;}
 }
@@ -866,8 +918,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .nav a{font-size:.85rem;}
   .burger{display:block;z-index:101;}
 
+  /* A divider between each drawer item, first one excepted. */
+  .nav > a,
+  .nav > .nav__item{width:100%;border-top:1px solid var(--line);padding-top:1.3rem;}
+  .nav > a:first-child,
+  .nav > .nav__item:first-child{border-top:0;padding-top:0;}
+  .nav__cta{border-top:0 !important;}
+
   /* Dropdown collapses into an inline accordion inside the drawer */
-  .nav__item{width:100%;}
   .has-drop{flex-direction:column;align-items:flex-start;gap:0;padding:0;margin:0;}
   .drop{
     position:static;transform:none;width:100%;padding-top:0;
@@ -876,7 +934,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   }
   .has-drop:hover .drop,
   .has-drop:focus-within .drop{transform:none;}
-  .has-drop:hover .drop:not(.is-shown){max-height:0;}
   .has-drop.is-open .drop{max-height:560px;}
   .has-drop.is-open .nav__drop-trigger svg{transform:rotate(180deg);}
   .drop__inner{
@@ -901,15 +958,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .svc-row:nth-child(even) .svc-row__media{order:0;}
   .svc-row__media{max-width:440px;}
   .story__media{max-width:440px;}
-  .quote-grid{grid-template-columns:1fr;}
   .insta__handles{text-align:left;}
   .section__head--split{flex-direction:column;align-items:flex-start;}
+  .section__head--journal .heading{white-space:normal;}
 }
 
 @media (max-width:640px){
   .gallery{grid-template-columns:repeat(2,1fr);}
   .svc-grid{grid-template-columns:1fr;gap:2.6rem;}
   .steps{grid-template-columns:1fr;}
+  .quote-grid{grid-template-columns:1fr;}
   .insta-strip{grid-template-columns:repeat(2,1fr);}
   .footer__grid{grid-template-columns:1fr;}
   .form{grid-template-columns:1fr;}
