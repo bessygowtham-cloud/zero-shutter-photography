@@ -11,6 +11,55 @@
     });
   }
 
+  /* Testimonials carousel */
+  var quoteTrack = $('quoteTrack');
+  if (quoteTrack) {
+    var quoteCards = Array.prototype.slice.call(quoteTrack.children);
+    var quoteDots = Array.prototype.slice.call(document.querySelectorAll('.quote-dots__dot'));
+    var quotePrev = $('quotePrev');
+    var quoteNext = $('quoteNext');
+    var quoteActive = 0;
+
+    var scrollToQuote = function (i) {
+      i = Math.max(0, Math.min(i, quoteCards.length - 1));
+      var card = quoteCards[i];
+      quoteTrack.scrollTo({ left: card.offsetLeft - quoteTrack.offsetLeft, behavior: 'smooth' });
+    };
+
+    quoteDots.forEach(function (dot, i) {
+      dot.addEventListener('click', function () { scrollToQuote(i); });
+    });
+
+    if (quotePrev) quotePrev.addEventListener('click', function () { scrollToQuote(quoteActive - 1); });
+    if (quoteNext) quoteNext.addEventListener('click', function () { scrollToQuote(quoteActive + 1); });
+
+    var updateQuoteState = function () {
+      var trackLeft = quoteTrack.getBoundingClientRect().left;
+      var closest = 0, closestDist = Infinity;
+      quoteCards.forEach(function (card, i) {
+        var dist = Math.abs(card.getBoundingClientRect().left - trackLeft);
+        if (dist < closestDist) { closestDist = dist; closest = i; }
+      });
+      quoteActive = closest;
+      quoteDots.forEach(function (d, i) { d.classList.toggle('is-active', i === quoteActive); });
+
+      var max = quoteTrack.scrollWidth - quoteTrack.clientWidth - 2;
+      if (quotePrev) quotePrev.disabled = quoteTrack.scrollLeft <= 0;
+      if (quoteNext) quoteNext.disabled = quoteTrack.scrollLeft >= max;
+    };
+
+    var quoteTicking = false;
+    quoteTrack.addEventListener('scroll', function () {
+      if (!quoteTicking) {
+        window.requestAnimationFrame(function () { updateQuoteState(); quoteTicking = false; });
+        quoteTicking = true;
+      }
+    }, { passive: true });
+
+    updateQuoteState();
+    window.addEventListener('resize', updateQuoteState);
+  }
+
   /* Hero parallax — the three panes drift at different speeds as you scroll past. */
   var hero = $('hero');
   var panes = hero ? Array.prototype.slice.call(hero.querySelectorAll('.hero__pane-img')) : [];
