@@ -1009,18 +1009,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .svc-grid{grid-template-columns:1fr;gap:2.6rem;}
   .steps{grid-template-columns:1fr;}
   .quote{width:92%;}
-  /* Arrows float on top of the card instead of taking their own column, so the
-     track gets the full width and there's no dead space on the left. */
+  /* Swiping + dots handle navigation on mobile — arrows just eat space there. */
   .quote-track{padding-left:0;padding-right:0;}
-  .quote-arrow{
-    position:absolute;top:50%;transform:translateY(-50%);
-    z-index:3;width:36px;height:36px;
-    background:rgba(255,255,255,.92);border-color:rgba(17,19,18,.1);
-    box-shadow:0 10px 24px -10px rgba(17,19,18,.35);
-  }
-  .quote-arrow:hover{background:var(--ink);}
-  .quote-arrow--prev{left:.4rem;}
-  .quote-arrow--next{right:.4rem;}
+  .quote-arrow{display:none;}
   .insta-strip{grid-template-columns:repeat(2,1fr);}
   .footer__grid{grid-template-columns:1fr;}
   .form{grid-template-columns:1fr;}
