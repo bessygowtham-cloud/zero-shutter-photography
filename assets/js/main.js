@@ -207,6 +207,26 @@
     applyFilter(wanted);
   }
 
+  /* Load more — reveals the remaining shots, then re-applies whichever
+     category filter is currently active so the newly-shown ones respect it. */
+  var loadMoreBtn = $('loadMore');
+  var galleryMore = document.querySelector('.gallery__more');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', function () {
+      document.querySelectorAll('.shot--more').forEach(function (s) {
+        s.classList.remove('shot--more');
+        if (s.getBoundingClientRect().top < window.innerHeight) {
+          s.classList.add('is-in');
+        } else {
+          io.observe(s);
+        }
+      });
+      var active = document.querySelector('.filter.is-active');
+      applyFilter(active ? active.dataset.filter : 'all');
+      if (galleryMore) galleryMore.classList.add('is-done');
+    });
+  }
+
   /* Lightbox — the image flies out from its thumbnail's exact position/size on
      open, and shrinks back to that same spot on close ("FLIP" technique). */
   var lb = $('lightbox');
@@ -219,7 +239,9 @@
     var closing = false;
 
     var visibleShots = function () {
-      return shots.filter(function (s) { return !s.classList.contains('is-hidden'); });
+      return shots.filter(function (s) {
+        return !s.classList.contains('is-hidden') && !s.classList.contains('shot--more');
+      });
     };
 
     var show = function (i) {

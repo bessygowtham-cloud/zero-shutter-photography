@@ -405,7 +405,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 }
 .shot:hover figcaption{opacity:1;transform:none;}
 .shot.is-hidden{display:none;}
+.shot--more{display:none;}
 .shot:nth-child(6n+1){aspect-ratio:4/5;}
+
+.gallery__more{
+  display:flex;justify-content:center;
+  margin-top:clamp(2rem,4vw,3rem);
+}
+.gallery__more.is-done{display:none;}
 
 /* ── Story ────────────────────────────────────────────── */
 .story__grid{
