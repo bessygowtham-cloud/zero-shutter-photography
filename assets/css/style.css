@@ -741,6 +741,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .lightbox img{
   max-width:min(92vw,780px);max-height:86vh;
   object-fit:contain;box-shadow:0 40px 90px -40px rgba(0,0,0,.9);
+  will-change:transform;
 }
 .lightbox__close{
   position:absolute;top:1.2rem;right:1.6rem;

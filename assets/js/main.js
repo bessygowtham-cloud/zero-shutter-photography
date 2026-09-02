@@ -207,12 +207,17 @@
     applyFilter(wanted);
   }
 
-  /* Lightbox */
+  /* Lightbox — the image flies out from its thumbnail's exact position/size on
+     open, and shrinks back to that same spot on close ("FLIP" technique). */
   var lb = $('lightbox');
   var lbImg = $('lbImg');
   var index = 0;
 
   if (lb && lbImg && shots.length) {
+    var FLIP_MS = 480;
+    var reduceMotionLb = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var closing = false;
+
     var visibleShots = function () {
       return shots.filter(function (s) { return !s.classList.contains('is-hidden'); });
     };
@@ -226,20 +231,90 @@
       lbImg.alt = img.alt;
     };
 
+    var currentThumbImg = function () {
+      var list = visibleShots();
+      var shot = list[index];
+      return shot ? shot.querySelector('img') : null;
+    };
+
+    /* Sets a transform that makes lbImg *look* like it's still sitting at
+       `fromRect`, then clears it — the browser animates the difference. */
+    var flyFrom = function (fromRect) {
+      var toRect = lbImg.getBoundingClientRect();
+      var sx = fromRect.width / toRect.width;
+      var sy = fromRect.height / toRect.height;
+      var tx = (fromRect.left + fromRect.width / 2) - (toRect.left + toRect.width / 2);
+      var ty = (fromRect.top + fromRect.height / 2) - (toRect.top + toRect.height / 2);
+
+      lbImg.style.transition = 'none';
+      lbImg.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + sx + ',' + sy + ')';
+      lbImg.getBoundingClientRect(); /* force reflow so the next line animates */
+      lbImg.style.transition = 'transform ' + FLIP_MS + 'ms var(--ease)';
+      lbImg.style.transform = 'translate(0,0) scale(1,1)';
+    };
+
+    /* Animates lbImg from its current spot down to `toRect`, then runs `done`. */
+    var flyTo = function (toRect, done) {
+      var fromRect = lbImg.getBoundingClientRect();
+      var sx = toRect.width / fromRect.width;
+      var sy = toRect.height / fromRect.height;
+      var tx = (toRect.left + toRect.width / 2) - (fromRect.left + fromRect.width / 2);
+      var ty = (toRect.top + toRect.height / 2) - (fromRect.top + fromRect.height / 2);
+
+      lbImg.style.transition = 'transform ' + FLIP_MS + 'ms var(--ease)';
+      lbImg.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + sx + ',' + sy + ')';
+      window.setTimeout(done, FLIP_MS);
+    };
+
+    var resetTransform = function () {
+      lbImg.style.transition = '';
+      lbImg.style.transform = '';
+    };
+
+    var openLb = function (shot) {
+      index = visibleShots().indexOf(shot);
+      show(index);
+
+      var originImg = shot.querySelector('img');
+      lb.classList.add('is-open');
+      lb.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+
+      if (reduceMotionLb || !originImg) return;
+      var startRect = originImg.getBoundingClientRect();
+      /* lbImg's rect is only meaningful once the browser knows its natural size
+         — tie the animation to that directly rather than guessing with rAF. */
+      if (lbImg.complete) {
+        flyFrom(startRect);
+      } else {
+        lbImg.addEventListener('load', function () { flyFrom(startRect); }, { once: true });
+      }
+    };
+
     var closeLb = function () {
-      lb.classList.remove('is-open');
-      lb.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+      if (closing) return;
+      var originImg = currentThumbImg();
+
+      if (reduceMotionLb || !originImg) {
+        lb.classList.remove('is-open');
+        lb.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        return;
+      }
+
+      closing = true;
+      lb.classList.remove('is-open'); /* backdrop starts fading now, in parallel */
+      var targetRect = originImg.getBoundingClientRect();
+      flyTo(targetRect, function () {
+        resetTransform();
+        lb.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        closing = false;
+      });
     };
 
     shots.forEach(function (shot) {
-      shot.addEventListener('click', function () {
-        index = visibleShots().indexOf(shot);
-        show(index);
-        lb.classList.add('is-open');
-        lb.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      });
+      shot.addEventListener('click', function () { openLb(shot); });
     });
 
     var lbClose = $('lbClose');
