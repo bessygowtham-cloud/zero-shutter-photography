@@ -381,10 +381,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .filter:hover{border-color:var(--ink);color:var(--ink);}
 .filter.is-active{background:var(--ink);border-color:var(--ink);color:var(--paper);}
 
+/* Breaks out of .shell to run full viewport width — only this grid, nothing
+   else in the section. */
 .gallery{
   display:grid;
   grid-template-columns:repeat(4,1fr);
   gap:clamp(.7rem,1.4vw,1.1rem);
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  margin-right:calc(50% - 50vw);
+  padding-inline:clamp(10px,2vw,24px);
 }
 .shot{
   margin:0;position:relative;overflow:hidden;cursor:zoom-in;
