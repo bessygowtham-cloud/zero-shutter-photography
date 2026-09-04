@@ -105,6 +105,34 @@
     }
   }
 
+  /* Hero slider (right side) — slides between its images, always entering from
+     the right and exiting to the left, regardless of which direction it just came from. */
+  var heroSlider = $('heroSlider');
+  if (heroSlider && !reduceMotion) {
+    var heroSlides = Array.prototype.slice.call(heroSlider.querySelectorAll('.hero__slide'));
+    if (heroSlides.length > 1) {
+      var slideActive = 0;
+      window.setInterval(function () {
+        var next = (slideActive + 1) % heroSlides.length;
+        var outgoing = heroSlides[slideActive];
+        var incoming = heroSlides[next];
+
+        outgoing.classList.remove('is-active');
+        outgoing.classList.add('is-prev');
+        incoming.classList.add('is-active');
+
+        window.setTimeout(function () {
+          outgoing.style.transition = 'none';
+          outgoing.classList.remove('is-prev');
+          void outgoing.offsetWidth;
+          outgoing.style.transition = '';
+        }, 1150);
+
+        slideActive = next;
+      }, 5500);
+    }
+  }
+
   /* Sticky header */
   var header = $('siteHeader');
   if (header) {
