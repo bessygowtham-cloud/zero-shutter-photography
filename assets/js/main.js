@@ -60,53 +60,9 @@
     window.addEventListener('resize', updateQuoteState);
   }
 
-  /* Hero — each of the three panes drifts at its own speed while scrolling,
-     and independently auto-rotates between its own two images. */
-  var hero = $('hero');
-  var heroPanes = hero ? Array.prototype.slice.call(hero.querySelectorAll('.hero__pane')) : [];
+  /* Hero slider — auto-advances through its slides, always entering from the
+     right and exiting to the left, regardless of which direction it just came from. */
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (hero && heroPanes.length) {
-    var speeds = [0.12, 0.2, 0.28];
-    var ticking = false;
-
-    var applyParallax = function () {
-      var y = Math.min(window.scrollY, hero.offsetHeight);
-      heroPanes.forEach(function (pane, i) {
-        var offset = y * speeds[i % speeds.length];
-        pane.querySelectorAll('.hero__pane-img').forEach(function (img) {
-          img.style.transform = 'translateY(' + offset + 'px)';
-        });
-      });
-      ticking = false;
-    };
-
-    if (!reduceMotion) {
-      window.addEventListener('scroll', function () {
-        if (!ticking) {
-          window.requestAnimationFrame(applyParallax);
-          ticking = true;
-        }
-      }, { passive: true });
-      applyParallax();
-    }
-
-    if (!reduceMotion) {
-      heroPanes.forEach(function (pane, paneIndex) {
-        var imgs = Array.prototype.slice.call(pane.querySelectorAll('.hero__pane-img'));
-        if (imgs.length < 2) return;
-        var current = 0;
-        window.setInterval(function () {
-          imgs[current].classList.remove('is-active');
-          current = (current + 1) % imgs.length;
-          imgs[current].classList.add('is-active');
-        }, 5200 + paneIndex * 650);
-      });
-    }
-  }
-
-  /* Hero slider (right side) — slides between its images, always entering from
-     the right and exiting to the left, regardless of which direction it just came from. */
   var heroSlider = $('heroSlider');
   if (heroSlider && !reduceMotion) {
     var heroSlides = Array.prototype.slice.call(heroSlider.querySelectorAll('.hero__slide'));
