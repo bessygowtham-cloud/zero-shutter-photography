@@ -229,16 +229,20 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 .hero__pane{
   position:relative;margin:0;height:100%;overflow:hidden;
 }
-.hero__pane--b{width:54%;}
-.hero__pane--c{width:46%;}
+.hero__pane--a{width:36%;}
+.hero__pane--b{width:32%;}
+.hero__pane--c{width:32%;}
 .hero__pane-img{
   position:absolute;top:-12%;left:0;
   width:100%;height:126%;
   object-fit:cover;
-  will-change:transform;
+  opacity:0;
+  transition:opacity 1.4s var(--ease);
+  will-change:transform,opacity;
 }
+.hero__pane-img.is-active{opacity:1;}
 /* This photo's faces sit in the top third; nudge slightly to keep them clear of the text zone below. */
-.hero__pane--b .hero__pane-img{top:-16%;height:130%;object-position:center 22%;}
+.hero__pane--a .hero__pane-img{top:-16%;height:130%;object-position:center 22%;}
 .hero__scrim{
   position:absolute;inset:0;pointer-events:none;
   background:
@@ -1001,7 +1005,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 
   .hero{height:82vh;min-height:520px;}
   /* Narrow side-by-side panes crop more aggressively — ease off so foreheads don't clip. */
-  .hero__pane--b .hero__pane-img{top:-8%;height:118%;object-position:center 20%;}
+  .hero__pane--a .hero__pane-img{top:-8%;height:118%;object-position:center 20%;}
   .hero__overlay{bottom:1.7rem;}
   .hero__overlay .lede{display:none;}
   .hero__scroll{display:none;}

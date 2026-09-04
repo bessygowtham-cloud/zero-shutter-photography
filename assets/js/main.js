@@ -60,30 +60,49 @@
     window.addEventListener('resize', updateQuoteState);
   }
 
-  /* Hero parallax — the three panes drift at different speeds as you scroll past. */
+  /* Hero — each of the three panes drifts at its own speed while scrolling,
+     and independently auto-rotates between its own two images. */
   var hero = $('hero');
-  var panes = hero ? Array.prototype.slice.call(hero.querySelectorAll('.hero__pane-img')) : [];
+  var heroPanes = hero ? Array.prototype.slice.call(hero.querySelectorAll('.hero__pane')) : [];
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (hero && panes.length && !reduceMotion) {
+  if (hero && heroPanes.length) {
     var speeds = [0.12, 0.2, 0.28];
     var ticking = false;
 
     var applyParallax = function () {
       var y = Math.min(window.scrollY, hero.offsetHeight);
-      panes.forEach(function (img, i) {
-        img.style.transform = 'translateY(' + (y * speeds[i % speeds.length]) + 'px)';
+      heroPanes.forEach(function (pane, i) {
+        var offset = y * speeds[i % speeds.length];
+        pane.querySelectorAll('.hero__pane-img').forEach(function (img) {
+          img.style.transform = 'translateY(' + offset + 'px)';
+        });
       });
       ticking = false;
     };
 
-    window.addEventListener('scroll', function () {
-      if (!ticking) {
-        window.requestAnimationFrame(applyParallax);
-        ticking = true;
-      }
-    }, { passive: true });
-    applyParallax();
+    if (!reduceMotion) {
+      window.addEventListener('scroll', function () {
+        if (!ticking) {
+          window.requestAnimationFrame(applyParallax);
+          ticking = true;
+        }
+      }, { passive: true });
+      applyParallax();
+    }
+
+    if (!reduceMotion) {
+      heroPanes.forEach(function (pane, paneIndex) {
+        var imgs = Array.prototype.slice.call(pane.querySelectorAll('.hero__pane-img'));
+        if (imgs.length < 2) return;
+        var current = 0;
+        window.setInterval(function () {
+          imgs[current].classList.remove('is-active');
+          current = (current + 1) % imgs.length;
+          imgs[current].classList.add('is-active');
+        }, 5200 + paneIndex * 650);
+      });
+    }
   }
 
   /* Sticky header */
