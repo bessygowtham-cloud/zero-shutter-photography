@@ -219,7 +219,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   min-height:600px;
   overflow:hidden;
   background:var(--ink);
+  touch-action:pan-y;
+  -webkit-user-select:none;user-select:none;
 }
+.hero__slide-img{-webkit-user-drag:none;}
 
 /* Full-bleed three-slide banner, auto-advancing. Each slide is a pair of
    photos so the tall portrait frames aren't cropped to a sliver; drops to a

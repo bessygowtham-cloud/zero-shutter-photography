@@ -60,32 +60,94 @@
     window.addEventListener('resize', updateQuoteState);
   }
 
-  /* Hero slider — auto-advances through its slides, always entering from the
-     right and exiting to the left, regardless of which direction it just came from. */
+  /* Hero slider — auto-advances, and can also be swiped (touch), dragged
+     (mouse) or two-finger scrolled sideways (trackpad) in either direction. */
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var heroSlider = $('heroSlider');
-  if (heroSlider && !reduceMotion) {
+  var heroEl = $('hero');
+  if (heroSlider && heroEl) {
     var heroSlides = Array.prototype.slice.call(heroSlider.querySelectorAll('.hero__slide'));
     if (heroSlides.length > 1) {
       var slideActive = 0;
-      window.setInterval(function () {
-        var next = (slideActive + 1) % heroSlides.length;
+      var sliding = false;
+      var autoTimer = null;
+
+      var goTo = function (dir) {
+        if (sliding) return;
+        sliding = true;
+        var next = (slideActive + dir + heroSlides.length) % heroSlides.length;
         var outgoing = heroSlides[slideActive];
         var incoming = heroSlides[next];
 
-        outgoing.classList.remove('is-active');
-        outgoing.classList.add('is-prev');
-        incoming.classList.add('is-active');
+        if (dir > 0) {
+          outgoing.classList.remove('is-active');
+          outgoing.classList.add('is-prev');
+          incoming.classList.add('is-active');
+        } else {
+          /* Going back: park the incoming slide off-screen left, then slide it in. */
+          incoming.style.transition = 'none';
+          incoming.classList.add('is-prev');
+          void incoming.offsetWidth;
+          incoming.style.transition = '';
+          incoming.classList.remove('is-prev');
+          incoming.classList.add('is-active');
+          outgoing.classList.remove('is-active');
+        }
 
         window.setTimeout(function () {
-          outgoing.style.transition = 'none';
-          outgoing.classList.remove('is-prev');
-          void outgoing.offsetWidth;
-          outgoing.style.transition = '';
+          if (dir > 0) {
+            outgoing.style.transition = 'none';
+            outgoing.classList.remove('is-prev');
+            void outgoing.offsetWidth;
+            outgoing.style.transition = '';
+          }
+          sliding = false;
         }, 1150);
 
         slideActive = next;
-      }, 5500);
+      };
+
+      var startAuto = function () {
+        if (reduceMotion) return;
+        window.clearInterval(autoTimer);
+        autoTimer = window.setInterval(function () { goTo(1); }, 5500);
+      };
+      startAuto();
+
+      var swipe = function (dir) {
+        goTo(dir);
+        startAuto();
+      };
+
+      var downX = 0, downY = 0, tracking = false;
+      heroEl.addEventListener('pointerdown', function (e) {
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        tracking = true;
+        downX = e.clientX;
+        downY = e.clientY;
+      });
+      window.addEventListener('pointerup', function (e) {
+        if (!tracking) return;
+        tracking = false;
+        var dx = e.clientX - downX;
+        var dy = e.clientY - downY;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.2) swipe(dx < 0 ? 1 : -1);
+      });
+      window.addEventListener('pointercancel', function () { tracking = false; });
+
+      /* Trackpad: one step per gesture — ignore the inertia tail that follows it. */
+      var wheelLocked = false;
+      var wheelIdle = null;
+      heroEl.addEventListener('wheel', function (e) {
+        if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+        e.preventDefault();
+        if (!wheelLocked && Math.abs(e.deltaX) > 20) {
+          wheelLocked = true;
+          swipe(e.deltaX > 0 ? 1 : -1);
+        }
+        window.clearTimeout(wheelIdle);
+        wheelIdle = window.setTimeout(function () { wheelLocked = false; }, 250);
+      }, { passive: false });
     }
   }
 
