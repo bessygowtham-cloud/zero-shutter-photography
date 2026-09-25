@@ -1016,6 +1016,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
     background:linear-gradient(180deg, rgba(9,11,10,.55) 0%, rgba(9,11,10,0) 22%);
   }
   .hero__overlay{position:static;padding-block:1.8rem 2.2rem;}
+  .hero__overlay .display{font-size:clamp(1.6rem,8.8vw,2.8rem);white-space:nowrap;}
+  .hero__overlay .display br{display:none;}
   .hero__overlay .btn--solid{background:#fff;border-color:#fff;color:var(--ink);}
   .hero__overlay .btn--solid:hover{background:var(--teal-mist);border-color:var(--teal-mist);}
   .hero__overlay .lede{display:none;}
