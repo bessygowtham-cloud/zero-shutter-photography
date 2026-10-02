@@ -249,7 +249,25 @@
   var filters = document.querySelectorAll('.filter');
   var shots = Array.prototype.slice.call(document.querySelectorAll('.shot'));
 
+  /* Reveals the photos held back behind "Load more". */
+  function revealMore() {
+    var more = document.querySelector('.gallery__more');
+    if (!more || more.classList.contains('is-done')) return;
+    document.querySelectorAll('.shot--more').forEach(function (s) {
+      s.classList.remove('shot--more');
+      if (s.getBoundingClientRect().top < window.innerHeight) {
+        s.classList.add('is-in');
+      } else {
+        io.observe(s);
+      }
+    });
+    more.classList.add('is-done');
+  }
+
+  /* Picking a category shows every photo in it; otherwise a sparse category
+     (e.g. Baby) would show only the couple of photos on the first page. */
   function applyFilter(cat) {
+    if (cat !== 'all') revealMore();
     filters.forEach(function (b) {
       b.classList.toggle('is-active', b.dataset.filter === cat);
     });
@@ -275,20 +293,11 @@
   /* Load more — reveals the remaining shots, then re-applies whichever
      category filter is currently active so the newly-shown ones respect it. */
   var loadMoreBtn = $('loadMore');
-  var galleryMore = document.querySelector('.gallery__more');
   if (loadMoreBtn) {
     loadMoreBtn.addEventListener('click', function () {
-      document.querySelectorAll('.shot--more').forEach(function (s) {
-        s.classList.remove('shot--more');
-        if (s.getBoundingClientRect().top < window.innerHeight) {
-          s.classList.add('is-in');
-        } else {
-          io.observe(s);
-        }
-      });
+      revealMore();
       var active = document.querySelector('.filter.is-active');
       applyFilter(active ? active.dataset.filter : 'all');
-      if (galleryMore) galleryMore.classList.add('is-done');
     });
   }
 
