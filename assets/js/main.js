@@ -274,6 +274,7 @@
     shots.forEach(function (shot) {
       shot.classList.toggle('is-hidden', cat !== 'all' && shot.dataset.cat !== cat);
     });
+    try { sessionStorage.setItem('zsFilter', cat); } catch (e) {}
   }
 
   filters.forEach(function (btn) {
@@ -288,6 +289,13 @@
   var wanted = new URLSearchParams(location.search).get('filter');
   if (wanted && document.querySelector('.filter[data-filter="' + wanted + '"]')) {
     applyFilter(wanted);
+  } else {
+    /* Otherwise keep whichever category was open before a refresh. */
+    var saved = null;
+    try { saved = sessionStorage.getItem('zsFilter'); } catch (e) {}
+    if (saved && saved !== 'all' && document.querySelector('.filter[data-filter="' + saved + '"]')) {
+      applyFilter(saved);
+    }
   }
 
   /* Load more — reveals the remaining shots, then re-applies whichever
