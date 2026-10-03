@@ -1060,7 +1060,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 }
 
 @media (max-width:640px){
-  .hero__gallery{aspect-ratio:2/3;}
+  .hero__gallery{aspect-ratio:100/165;}
   .filters{
     flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
     scrollbar-width:none;
