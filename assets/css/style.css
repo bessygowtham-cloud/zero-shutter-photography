@@ -653,8 +653,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   display:grid;grid-template-columns:1fr 1fr;
   gap:clamp(2.4rem,6vw,5.5rem);align-items:start;
 }
-.contact__copy p{color:var(--ink-soft);max-width:42ch;}
-.contact__copy .heading{margin-bottom:1.4rem;}
+.contact__copy p{color:var(--ink-soft);max-width:none;}
+.contact__copy .heading{margin-bottom:1.4rem;white-space:nowrap;}
 
 .contact__list{list-style:none;padding:0;margin:2.6rem 0 0;}
 .contact__list li{
