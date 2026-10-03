@@ -1048,7 +1048,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .story__grid,.faq__grid,.contact__grid{grid-template-columns:1fr;}
   .page-hero__grid,.detail__grid{grid-template-columns:1fr;}
   .page-hero{padding-top:6.5rem;}
-  .page-hero .page-hero__media{order:-1;}
+  /* The figure carries a default 40px side margin; trimming it makes the photo 20% larger. */
+  .page-hero .page-hero__media{order:-1;margin-inline:max(0px,calc(48px - 10%));}
   .page-hero__media{max-width:100%;}
   .svc-row{grid-template-columns:1fr;gap:2rem;}
   .svc-row:nth-child(even) .svc-row__media{order:0;}
