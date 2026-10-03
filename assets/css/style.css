@@ -311,6 +311,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
 
 /* ── Sections ─────────────────────────────────────────── */
 .section{padding:clamp(4.5rem,10vw,8.5rem) 0;}
+.section.services{padding-top:clamp(2.25rem,5vw,4.25rem);}
 .section--tint{background:var(--paper-warm);}
 .section--dark{background:var(--ink);color:var(--paper);}
 
