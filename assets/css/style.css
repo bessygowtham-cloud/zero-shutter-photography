@@ -148,9 +148,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   transition:background .45s var(--ease), box-shadow .45s var(--ease), padding .45s var(--ease);
   padding:1.5rem 0;
 }
-.site-header.is-stuck{
+/* The blur lives on a background layer, not the header itself: a header with
+   backdrop-filter becomes the containing block for fixed children, which shrank
+   the mobile menu drawer to the height of the header bar once scrolled. */
+.site-header::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
   background:rgba(255,255,255,.94);
   backdrop-filter:saturate(180%) blur(14px);
+  -webkit-backdrop-filter:saturate(180%) blur(14px);
+  opacity:0;transition:opacity .45s var(--ease);
+}
+.site-header.is-stuck::before{opacity:1;}
+.site-header.is-stuck{
   box-shadow:0 1px 0 var(--line);
   padding:.85rem 0;
 }
@@ -981,7 +990,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   .nav > .nav__item{width:100%;border-top:1px solid var(--line);padding-top:1.3rem;}
   .nav > a:first-child,
   .nav > .nav__item:first-child{border-top:0;padding-top:0;}
-  .nav__cta{border-top:0 !important;}
+  .nav__cta{border-top:1px solid var(--ink) !important;}
 
   /* Dropdown collapses into an inline accordion inside the drawer */
   .has-drop{flex-direction:column;align-items:flex-start;gap:0;padding:0;margin:0;}
