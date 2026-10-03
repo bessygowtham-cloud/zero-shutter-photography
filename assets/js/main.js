@@ -189,6 +189,16 @@
         closeNav();
       });
     });
+
+    /* Tapping anywhere outside the open drawer closes it. Capture phase, and the
+       tap is swallowed, so it doesn't also activate whatever sits under it. */
+    document.addEventListener('click', function (e) {
+      if (!nav.classList.contains('is-open')) return;
+      if (nav.contains(e.target) || burger.contains(e.target)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      closeNav();
+    }, true);
   }
 
   /* Services dropdown — hover on desktop (CSS), tap to expand on mobile */
