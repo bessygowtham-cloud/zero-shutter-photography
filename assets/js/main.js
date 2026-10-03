@@ -285,6 +285,19 @@
       shot.classList.toggle('is-hidden', cat !== 'all' && shot.dataset.cat !== cat);
     });
     try { sessionStorage.setItem('zsFilter', cat); } catch (e) {}
+    centerActiveFilter(true);
+  }
+
+  /* On phones the filter row scrolls sideways; keep the chosen filter centred so
+     the ones either side of it come into view. Only scrolls the row itself. */
+  function centerActiveFilter(smooth) {
+    var row = document.getElementById('filters');
+    var btn = row && row.querySelector('.filter.is-active');
+    if (!row || !btn || row.scrollWidth <= row.clientWidth) return;
+    var r = row.getBoundingClientRect();
+    var b = btn.getBoundingClientRect();
+    var target = row.scrollLeft + (b.left - r.left) - (row.clientWidth - b.width) / 2;
+    row.scrollTo({ left: Math.max(0, target), behavior: smooth ? 'smooth' : 'auto' });
   }
 
   filters.forEach(function (btn) {
@@ -307,6 +320,7 @@
       applyFilter(saved);
     }
   }
+  centerActiveFilter(false);
 
   /* Load more — reveals the remaining shots, then re-applies whichever
      category filter is currently active so the newly-shown ones respect it. */
