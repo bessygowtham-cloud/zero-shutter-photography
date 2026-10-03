@@ -631,7 +631,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   gap:clamp(2.2rem,6vw,5rem);align-items:start;
 }
 .faq__intro .heading{margin-bottom:1.4rem;}
-.faq__aside{color:var(--ink-soft);max-width:34ch;margin:0 0 2rem;}
+.faq__aside{color:var(--ink-soft);max-width:none;margin:0 0 2rem;}
 
 .acc{border-bottom:1px solid var(--line);}
 .acc summary{
