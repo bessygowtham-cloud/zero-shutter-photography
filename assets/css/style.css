@@ -72,6 +72,13 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;}
   letter-spacing:-.005em;
   margin:0;
 }
+/* Keeps a heading on its lines: nowrap, with the size capped so the longest line
+   (--fit = its width in em) never exceeds the content width. */
+.heading--fit{
+  white-space:nowrap;
+  font-size:min(clamp(1.7rem,4vw,3.4rem), calc((100vw - 2 * var(--gutter)) / var(--fit,10)));
+}
+.section__head:has(.heading--fit){max-width:none;}
 .heading--light{color:var(--paper);}
 .heading--light em{color:var(--teal-mist);}
 
